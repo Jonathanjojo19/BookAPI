@@ -120,9 +120,9 @@ describe('Books', function() {
 				.delete('/books/' + book.id)
 				.end((err, res) => {
 					res.should.have.status(200);
-					// res.body.should.have.property("success").eql(true);
-					// res.body.data.should.have.property('ok').eql(1);
-					// res.body.data.should.have.property('n').eql(1);
+					res.body.should.have.property("success").eql(true);
+					res.body.data.should.have.property('ok').eql(1);
+					res.body.data.should.have.property('n').eql(1);
 					done();
 				});
 			});
