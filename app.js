@@ -13,12 +13,14 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // MongoDB Atlas connection with Mongoose
 const mongoose = require("mongoose");
-const dbConfig = require("./config/database.config");
 
-mongoose.set("useNewUrlParser", true);
+const dbConfig = require("./config/index");
+
+mongoose.set("useCreateIndex", true);
 mongoose.connect(
     `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.server}/${
-        dbConfig.database}`
+        dbConfig.database}`,
+    {"useNewUrlParser": true}
 );
 
 const db = mongoose.connection;
@@ -34,3 +36,5 @@ app.use("/", routes);
 const server = app.listen(port, () => {
     console.log("Express running on port", port);
 });
+
+module.exports = server;
