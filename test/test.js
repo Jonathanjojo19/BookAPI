@@ -83,6 +83,26 @@ describe('Books', function() {
 				});
 			});
 		});
+
+		it('it should return unsuccessful response when getting with malformed id', (done) => {
+			let book = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book.save((err, book) => {
+				chai.request(app)
+				.get('/books/' + 'NaN-book-id')
+				.end((err, res) => {
+					res.should.have.status(500);
+					res.body.should.have.property("success").eql(false);
+					res.body.message.should.have.property("name").eql("CastError");
+					done();
+				});
+			});
+		})
 	});
 
 	describe('/POST/books/', () => {
@@ -152,6 +172,26 @@ describe('Books', function() {
 				});
 			});
 		});
+
+		it('it should return unsuccessful response when deleting with malformed id', (done) => {
+			let book = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book.save((err, book) => {
+				chai.request(app)
+				.delete('/books/' + 'NaN-book-id')
+				.end((err, res) => {
+					res.should.have.status(500);
+					res.body.should.have.property("success").eql(false);
+					res.body.message.should.have.property("name").eql("CastError");
+					done();
+				});
+			});
+		})
 	});
 
 	describe('/PUT/books/:id book', () => {
@@ -215,6 +255,26 @@ describe('Books', function() {
 				});
 			});
 		});
+
+		it('it should return unsuccessful response when updating with malformed id', (done) => {
+			let book = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book.save((err, book) => {
+				chai.request(app)
+				.put('/books/' + 'NaN-book-id')
+				.end((err, res) => {
+					res.should.have.status(500);
+					res.body.should.have.property("success").eql(false);
+					res.body.message.should.have.property("name").eql("CastError");
+					done();
+				});
+			});
+		})
 	});
 
 	describe('/PATCH/books/:id book', () => {
@@ -248,5 +308,25 @@ describe('Books', function() {
 				});
 			});
 		});
+
+		it('it should return unsuccessful response when patching with malformed id', (done) => {
+			let book = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book.save((err, book) => {
+				chai.request(app)
+				.patch('/books/' + 'NaN-book-id')
+				.end((err, res) => {
+					res.should.have.status(500);
+					res.body.should.have.property("success").eql(false);
+					res.body.message.should.have.property("name").eql("CastError");
+					done();
+				});
+			});
+		})
 	});
 });

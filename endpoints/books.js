@@ -6,11 +6,7 @@ const Books = {
         Book.find({})
         .sort({ _id: "ascending" })
         .exec((err, book) => {
-            if (err) {
-                return requestUtil.failed(res, err);
-            } else {
-                requestUtil.success(res, book);
-            }
+            requestUtil.success(res, book);
         });
     },
 
