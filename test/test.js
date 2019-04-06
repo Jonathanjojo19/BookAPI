@@ -23,7 +23,7 @@ describe('Books', function() {
 		});
 	});
 	
-	describe('/GET book', () => {
+	describe('/GET/books/', () => {
 		it('it should GET an array of length 0 when there is no book', (done) => {
 			chai.request(app)
 			.get('/books/')
@@ -56,8 +56,37 @@ describe('Books', function() {
 		});
 	});
 
-	describe('/POST book', () => {
-		it('it should POST a book ', (done) => {
+	describe('/GET/books/:id book', () => {
+		it('it should GET a book by the given id', (done) => {
+			let book = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book.save((err, book) => {
+				chai.request(app)
+				.get('/books/' + book.id)
+				.end((err, res) => {
+					res.should.have.status(200);
+					res.body.should.have.property("success").eql(true);
+					res.body.data.should.have.property('title').eql("TITLE");
+					res.body.data.should.have.property('author').eql("AUTHOR");
+					res.body.data.should.have.property('isbn').eql("12345");
+					res.body.data.should.have.property('publishedOn').eql(2019);
+					res.body.data.should.have.property('numberOfPages').eql(100);
+					res.body.data.should.have.property('_id').eql(parseInt(book.id));
+					res.body.data.should.have.property('createdAt');
+					res.body.data.should.have.property('updatedAt');
+					done();
+				});
+			});
+		});
+	});
+
+	describe('/POST/books/', () => {
+		it('it should POST a book and return the book', (done) => {
 			let book = {
 				"title" : "TITLE",
 				"author" : "AUTHOR",
@@ -102,36 +131,7 @@ describe('Books', function() {
 		});
 	});
 
-	describe('/GET/:id book', () => {
-		it('it should GET a book by the given id', (done) => {
-			let book = new Book({ 
-				title: "TITLE", 
-				author: "AUTHOR", 
-				isbn: "12345", 
-				publishedOn: 2019,
-				numberOfPages: 100 
-			});
-			book.save((err, book) => {
-				chai.request(app)
-				.get('/books/' + book.id)
-				.end((err, res) => {
-					res.should.have.status(200);
-					res.body.should.have.property("success").eql(true);
-					res.body.data.should.have.property('title').eql("TITLE");
-					res.body.data.should.have.property('author').eql("AUTHOR");
-					res.body.data.should.have.property('isbn').eql("12345");
-					res.body.data.should.have.property('publishedOn').eql(2019);
-					res.body.data.should.have.property('numberOfPages').eql(100);
-					res.body.data.should.have.property('_id').eql(parseInt(book.id));
-					res.body.data.should.have.property('createdAt');
-					res.body.data.should.have.property('updatedAt');
-					done();
-				});
-			});
-		});
-	});
-
-	describe('/DELETE/:id book', () => {
+	describe('/DELETE/books/:id book', () => {
 		it('it should DELETE a book given the id', (done) => {
 			let book = new Book({ 
 				title: "TITLE", 
@@ -154,8 +154,8 @@ describe('Books', function() {
 		});
 	});
 
-	describe('/PUT/:id book', () => {
-		it('it should UPDATE a book given the id', (done) => {
+	describe('/PUT/books/:id book', () => {
+		it('it should UPDATE a book given the id and return the book', (done) => {
 			let book = new Book({ 
 				title: "TITLE", 
 				author: "AUTHOR", 
@@ -217,8 +217,8 @@ describe('Books', function() {
 		});
 	});
 
-	describe('/PATCH/:id book', () => {
-		it('it should PATCH a book given the id', (done) => {
+	describe('/PATCH/books/:id book', () => {
+		it('it should PATCH a book given the id and return the book', (done) => {
 			let book = new Book({ 
 				title: "TITLE", 
 				author: "AUTHOR", 

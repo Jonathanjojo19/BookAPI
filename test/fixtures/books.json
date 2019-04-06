@@ -27,17 +27,75 @@
         ]
     },
     "single" : {
-        "success": true,
-        "data": {
-            "_id": 1,
-            "title": "TITLE1",
-            "author": "AUTHOR1",
-            "isbn": "1",
-            "publishedOn": 2017,
-            "numberOfPages": 100,
-            "createdAt": "2019-04-06T03:16:14.409Z",
-            "updatedAt": "2019-04-06T03:16:14.409Z",
-            "__v": 0
+        "success" : {
+            "success": true,
+            "data": {
+                "_id": 1,
+                "title": "TITLE1",
+                "author": "AUTHOR1",
+                "isbn": "1",
+                "publishedOn": 2017,
+                "numberOfPages": 100,
+                "createdAt": "2019-04-06T03:16:14.409Z",
+                "updatedAt": "2019-04-06T03:16:14.409Z",
+                "__v": 0
+            }
+        },
+        "fail" : {
+            "success": false,
+            "message": {
+                "errors": {
+                    "title": {
+                        "message": "Path `title` is required.",
+                        "name": "ValidatorError",
+                        "properties": {
+                            "message": "Path `title` is required.",
+                            "type": "required",
+                            "path": "title"
+                        },
+                        "kind": "required",
+                        "path": "title"
+                    }
+                },
+                "_message": "Book validation failed",
+                "message": "Book validation failed: title: Path `title` is required.",
+                "name": "ValidationError"
+            }
+        },
+        "delete" : {
+            "success": true,
+            "data": {
+                "n": 1,
+                "opTime": {
+                    "ts": "6676626115894706177",
+                    "t": 1
+                },
+                "electionId": "7fffffff0000000000000001",
+                "ok": 1,
+                "operationTime": "6676626115894706177",
+                "$clusterTime": {
+                    "clusterTime": "6676626115894706177",
+                    "signature": {
+                        "hash": "BRgYY54uPQECKCY5AdIXuXZ/oF0=",
+                        "keyId": "6674720937121677313"
+                    }
+                },
+                "deletedCount": 1
+            }
+        },
+        "update" : {
+            "success": true,
+            "data": {
+                "_id": 1,
+                "title": "NEW_TITLE",
+                "author": "AUTHOR1",
+                "isbn": "1",
+                "publishedOn": 2017,
+                "numberOfPages": 100,
+                "createdAt": "2019-04-06T03:16:14.409Z",
+                "updatedAt": "2019-04-06T03:16:14.409Z",
+                "__v": 0
+            }
         }
     }
 }
