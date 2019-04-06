@@ -65,7 +65,7 @@ describe('Books', function() {
         });
 
         it('it should return No Item Found by putting the given non existant id' , (done) => {
-            this.get.yields(null, null, JSON.stringify(books.single.notfound));
+            this.get.yields(null, null, JSON.stringify(books.single.not_found));
             request.get(`${base}/books/-1`, (err, res, body) => {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(false);
@@ -75,7 +75,7 @@ describe('Books', function() {
         });
 
         it('it should return unsuccessful response when getting with malformed id' , (done) => {
-            this.get.yields(null, null, JSON.stringify(books.single.notfound));
+            this.get.yields(null, null, JSON.stringify(books.single.malformed_id));
             request.get(`${base}/books/NaN-book-id`, (err, res, body) => {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(false);
@@ -115,7 +115,7 @@ describe('Books', function() {
         });
 
         it('it should not POST a book without a title', (done) => {
-            this.post.yields(null, null, JSON.stringify(books.single.malformed-param));
+            this.post.yields(null, null, JSON.stringify(books.single.incomplete_param));
             const options = {
                 body: {
                     author: "AUTHOR1", 
@@ -137,28 +137,34 @@ describe('Books', function() {
 
     describe('[STUBBED] /DELETE/books/:id book', () => {
         it('it should DELETE a book given the id', (done) => {
-            this.delete.yields(null, null, JSON.stringify(books.single.delete));
+            this.delete.yields(null, null, JSON.stringify(books.single.success));
             request.delete(`${base}/books/1`, (err, res, body) => {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(true);
-                body.data.should.have.property('ok').eql(1);
-				body.data.should.have.property('n').eql(1);	
+                body.data.should.have.property('title').eql("TITLE1");
+                body.data.should.have.property('author').eql("AUTHOR1");
+                body.data.should.have.property('isbn').eql("1");
+                body.data.should.have.property('publishedOn').eql(2017);
+                body.data.should.have.property('numberOfPages').eql(100);
+                body.data.should.have.property('_id').eql(1);
+                body.data.should.have.property('createdAt');
+                body.data.should.have.property('updatedAt');
                 done();
             });
         });
 
         it('it should receive that no data deleted by deleting the given non existant id' , (done) => {
-            this.delete.yields(null, null, JSON.stringify(books.single.notfound));
+            this.delete.yields(null, null, JSON.stringify(books.single.not_found));
             request.delete(`${base}/books/-1`, (err, res, body) => {
-                body.should.have.property("success").eql(true);
-                body.data.should.have.property('ok').eql(1);
-				body.data.should.have.property('n').eql(0);
+                body = JSON.parse(body);
+                body.should.have.property("success").eql(false);
+				body.should.have.property("message").eql("No Item Found");
                 done();
             });
         });
 
         it('it should return unsuccessful response when getting with malformed id' , (done) => {
-            this.delete.yields(null, null, JSON.stringify(books.single.notfound));
+            this.delete.yields(null, null, JSON.stringify(books.single.malformed_id));
             request.delete(`${base}/books/NaN-book-id`, (err, res, body) => {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(false);
@@ -197,8 +203,8 @@ describe('Books', function() {
             });
         });
 
-        it('it should not PUT a book without a title', (done) => {
-            this.put.yields(null, null, JSON.stringify(books.single.malformed-param));
+        it('it should PUT a book with previous title if no title given', (done) => {
+            this.put.yields(null, null, JSON.stringify(books.single.success));
             const options = {
                 body: {
                     author: "AUTHOR1", 
@@ -211,14 +217,21 @@ describe('Books', function() {
             };
             request.put(options, (err, res, body) => {
                 body = JSON.parse(body);
-                body.should.have.property("success").eql(false);
-                body.message.errors.title.should.have.property('kind').eql('required');
+                body.should.have.property("success").eql(true);
+                body.data.should.have.property('title').eql("TITLE1");
+                body.data.should.have.property('author').eql("AUTHOR1");
+                body.data.should.have.property('isbn').eql("1");
+                body.data.should.have.property('publishedOn').eql(2017);
+                body.data.should.have.property('numberOfPages').eql(100);
+                body.data.should.have.property('_id').eql(1);
+                body.data.should.have.property('createdAt');
+                body.data.should.have.property('updatedAt');
                 done();
             });
         });
 
         it('it should return unsuccessful response when getting with malformed id' , (done) => {
-            this.put.yields(null, null, JSON.stringify(books.single.notfound));
+            this.put.yields(null, null, JSON.stringify(books.single.malformed_id));
             request.put(`${base}/books/NaN-book-id`, (err, res, body) => {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(false);

@@ -41,11 +41,11 @@
                 "__v": 0
             }
         },
-        "notfound" : {
+        "not_found" : {
             "success": false,
             "message": "No Item Found"
         },
-        "malformed-param" : {
+        "incomplete_param" : {
             "success": false,
             "message": {
                 "errors": {
@@ -101,7 +101,7 @@
                 "__v": 0
             }
         },
-        "malformed-id" : {
+        "malformed_id" : {
             "success": false,
             "message": {
                 "message": "Cast to number failed for value \"post\" at path \"_id\" for model \"Book\"",

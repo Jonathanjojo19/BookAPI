@@ -201,7 +201,7 @@ describe('Books', function() {
 
 		it('it should return No Item Found by deleting the given non existant id', (done) => {
 			chai.request(app)
-			.get('/books/' + "-1")
+			.get('/books/' + "0")
 			.end((err, res) => {
 				res.should.have.status(500);
 				res.body.should.have.property("success").eql(false);
