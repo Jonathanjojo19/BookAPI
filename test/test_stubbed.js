@@ -186,7 +186,7 @@ describe('Books', function() {
                     numberOfPages: 100 
                 },
                 json: true,
-                url: `${base}/books/`
+                url: `${base}/books/1`
             };
             request.put(options, (err, res, body) => {
                 body = JSON.parse(body);
@@ -203,7 +203,7 @@ describe('Books', function() {
             });
         });
 
-        it('it should PUT a book with previous title if no title given', (done) => {
+        it('it should PUT a book with previous title if no title given when editing', (done) => {
             this.put.yields(null, null, JSON.stringify(books.single.success));
             const options = {
                 body: {
@@ -213,7 +213,7 @@ describe('Books', function() {
                     numberOfPages: 100 
                 },
                 json: true,
-                url: `${base}/books/`
+                url: `${base}/books/1`
             };
             request.put(options, (err, res, body) => {
                 body = JSON.parse(body);
@@ -236,6 +236,54 @@ describe('Books', function() {
                 body = JSON.parse(body);
                 body.should.have.property("success").eql(false);
                 body.message.should.have.property("name").eql("CastError");
+                done();
+            });
+        });
+
+        it('it should create a new book when putting in a non-existant id', (done) => {
+            this.put.yields(null, null, JSON.stringify(books.single.success));
+            const options = {
+                body: {
+                    title: "TITLE1",
+                    author: "AUTHOR1", 
+                    isbn: "1", 
+                    publishedOn: 2019,
+                    numberOfPages: 100 
+                },
+                json: true,
+                url: `${base}/books/-1`
+            };
+            request.put(options, (err, res, body) => {
+                body = JSON.parse(body);
+                body.should.have.property("success").eql(true);
+                body.data.should.have.property('title').eql("TITLE1");
+                body.data.should.have.property('author').eql("AUTHOR1");
+                body.data.should.have.property('isbn').eql("1");
+                body.data.should.have.property('publishedOn').eql(2017);
+                body.data.should.have.property('numberOfPages').eql(100);
+                body.data.should.have.property('_id').eql(1);
+                body.data.should.have.property('createdAt');
+                body.data.should.have.property('updatedAt');
+                done();
+            });
+        });
+
+        it('it should not create a new book when putting in a non-existant id when no title is given', (done) => {
+            this.put.yields(null, null, JSON.stringify(books.single.incomplete_param));
+            const options = {
+                body: {
+                    author: "AUTHOR1", 
+                    isbn: "1", 
+                    publishedOn: 2019,
+                    numberOfPages: 100 
+                },
+                json: true,
+                url: `${base}/books/-1`
+            };
+            request.put(options, (err, res, body) => {
+                body = JSON.parse(body);
+				body.should.have.property('success').eql(false);
+				body.message.errors.title.should.have.property('kind').eql('required');
                 done();
             });
         });

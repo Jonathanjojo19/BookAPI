@@ -201,7 +201,7 @@ describe('Books', function() {
 
 		it('it should return No Item Found by deleting the given non existant id', (done) => {
 			chai.request(app)
-			.get('/books/' + "0")
+			.delete('/books/' + "-1")
 			.end((err, res) => {
 				res.should.have.status(500);
 				res.body.should.have.property("success").eql(false);
@@ -247,7 +247,7 @@ describe('Books', function() {
 			});
 		});
 
-		it('it should PUT a book with previous title if no title given', (done) => {
+		it('it should PUT a book with previous title if no title given when editing', (done) => {
 			let book = new Book({ 
 				title: "TITLE", 
 				author: "AUTHOR", 
@@ -323,6 +323,24 @@ describe('Books', function() {
 				res.body.data.should.have.property('_id').eql(-1);
 				res.body.data.should.have.property('createdAt');
 				res.body.data.should.have.property('updatedAt');
+				done();
+			});
+		});
+
+		it('it should not create a new book when putting in a non-existant id when no title is given', (done) => {
+			let book = {
+				"author" : "AUTHOR",
+				"isbn": "12345",
+				"publishedOn": 2019,
+				"numberOfPages": 100
+			}
+			chai.request(app)
+			.put('/books/-1')
+			.send(book)
+			.end((err, res) => {
+				res.should.have.status(500);
+				res.body.should.have.property('success').eql(false);
+				res.body.message.errors.title.should.have.property('kind').eql('required');
 				done();
 			});
 		});
