@@ -3,23 +3,39 @@ process.env.NODE_ENV = 'test';
 let Book = require('../models/Book');
 let app = require('../app');
 
+let sinon = require('sinon');
+let request = require('request');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
+
+const base = 'http://localhost:3000';
 
 chai.use(chaiHttp);
 
 describe('Books', function() {
 	this.timeout(5000);
 	beforeEach((done) => { 
+		
+		this.get = sinon.stub(request, 'get');
+		this.post = sinon.stub(request, 'post');
+		this.put = sinon.stub(request, 'put');
+		this.delete = sinon.stub(request, 'delete');
+	
 		Book.remove({}, (err) => { 
 			done();
 		});
 	});
+
+	afterEach(() => {
+		request.get.restore();
+		request.post.restore();
+		request.put.restore();
+		request.delete.restore();
+	});
 	
 	describe('/GET book', () => {
-		this.timeout(15000);
-		it('it should GET all the books', (done) => {
+		it('it should GET an array of length 0 when there is no book', (done) => {
 			chai.request(app)
 			.get('/books/')
 			.end((err, res) => {
@@ -27,6 +43,26 @@ describe('Books', function() {
 				res.body.data.should.be.a('array');
 				res.body.data.length.should.be.eql(0);
 				done();
+			});
+		});
+
+		it('it should GET all books', (done) => {
+			let book1 = new Book({ 
+				title: "TITLE", 
+				author: "AUTHOR", 
+				isbn: "12345", 
+				publishedOn: 2019,
+				numberOfPages: 100 
+			});
+			book1.save((err, book) => {
+				chai.request(app)
+				.get('/books/')
+				.end((err, res) => {
+					res.should.have.status(200);
+					res.body.data.should.be.a('array');
+					res.body.data.length.should.be.eql(1);
+					done();
+				});
 			});
 		});
 	});
