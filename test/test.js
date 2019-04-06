@@ -84,6 +84,17 @@ describe('Books', function() {
 			});
 		});
 
+		it('it should GET a null by the given non existant id', (done) => {
+			chai.request(app)
+			.get('/books/' + "-1")
+			.end((err, res) => {
+				res.should.have.status(500);
+				res.body.should.have.property("success").eql(false);
+				res.body.should.have.property("message").eql("No Item Found");
+				done();
+			});		
+		});
+
 		it('it should return unsuccessful response when getting with malformed id', (done) => {
 			let book = new Book({ 
 				title: "TITLE", 
@@ -191,7 +202,19 @@ describe('Books', function() {
 					done();
 				});
 			});
-		})
+		});
+
+		it('it should receive that no data deleted by deleting the given non existant id', (done) => {
+			chai.request(app)
+			.delete('/books/' + "-1")
+			.end((err, res) => {
+				res.should.have.status(200);
+				res.body.should.have.property("success").eql(true);
+				res.body.data.should.have.property('ok').eql(1);
+				res.body.data.should.have.property('n').eql(0);
+				done();
+			});		
+		});
 	});
 
 	describe('/PUT/books/:id book', () => {
@@ -274,7 +297,18 @@ describe('Books', function() {
 					done();
 				});
 			});
-		})
+		});
+
+		it('it should receive a null by putting the given non existant id', (done) => {
+			chai.request(app)
+			.put('/books/' + "-1")
+			.end((err, res) => {
+				res.should.have.status(500);
+				res.body.should.have.property("success").eql(false);
+				res.body.should.have.property("message").eql("No Item Found");
+				done();
+			});		
+		});
 	});
 
 	describe('/PATCH/books/:id book', () => {
@@ -327,6 +361,17 @@ describe('Books', function() {
 					done();
 				});
 			});
-		})
+		});
+
+		it('it should receive a null by patching the given non existant id', (done) => {
+			chai.request(app)
+			.patch('/books/' + "-1")
+			.end((err, res) => {
+				res.should.have.status(500);
+				res.body.should.have.property("success").eql(false);
+				res.body.should.have.property("message").eql("No Item Found");
+				done();
+			});		
+		});
 	});
 });

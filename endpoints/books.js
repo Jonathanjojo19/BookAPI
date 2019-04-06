@@ -24,8 +24,8 @@ const Books = {
     getBook: () => (req, res) => {
         Book.findById(req.params.id)
         .exec((err, book) => {
-            if (err) {
-                requestUtil.failed(res, err);
+            if (err || book == null) {
+                requestUtil.failed(res, err || "No Item Found");
             } else {
                 requestUtil.success(res, book);
             }
@@ -46,8 +46,8 @@ const Books = {
     editBook: () => (req, res) => {
         Book.findById(req.params.id)
         .exec((err, book) => {
-            if (err || req.body.title == null) {
-                requestUtil.failed(res, err);
+            if (err || book == null || req.body.title == null) {
+                requestUtil.failed(res, err || "No Item Found");
             } else {
                 book.title = req.body.title;
                 book.author = req.body.author;
@@ -63,8 +63,8 @@ const Books = {
     updateBook: () => (req, res) => {
         Book.findById(req.params.id)
         .exec((err, book) => {
-            if (err) {
-                requestUtil.failed(res, err);
+            if (err || book == null) {
+                requestUtil.failed(res, err || "No Item Found");
             } else {
                 for(let b in req.body){
                     book[b] = req.body[b];
