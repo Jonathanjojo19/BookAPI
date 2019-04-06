@@ -22,10 +22,12 @@ const Books = {
     },
 
     getBook: () => (req, res) => {
-        Book.findById(req.params.id)
+        Book.findOne({_id:req.params.id})
         .exec((err, book) => {
-            if (err || book == null) {
-                requestUtil.failed(res, err || "No Item Found");
+            if (err) {
+                requestUtil.failed(res, err);
+            } else if (book == null) {
+                requestUtil.failed(res, "No Item Found");
             } else {
                 requestUtil.success(res, book);
             }
@@ -33,46 +35,39 @@ const Books = {
     },
 
     deleteBook: () => (req, res) => {
-        Book.deleteOne({ _id:req.params.id })
+        Book.findOneAndRemove({_id:req.params.id})
         .exec((err, book) => {
             if (err) {
                 requestUtil.failed(res, err);
+            } else if (book == null) {
+                requestUtil.failed(res, "No Item Found");
             } else {
                 requestUtil.success(res, book);
             }
         });
-    },
-
-    editBook: () => (req, res) => {
-        Book.findById(req.params.id)
-        .exec((err, book) => {
-            if (err || book == null || req.body.title == null) {
-                requestUtil.failed(res, err || "No Item Found");
-            } else {
-                book.title = req.body.title;
-                book.author = req.body.author;
-                book.isbn = req.body.isbn;
-                book.publishedOn = req.body.publishedOn;
-                book.numberOfPages = req.body.numberOfPages;
-                book.save();
-                requestUtil.success(res, book);
-            }
-        }); 
     },
 
     updateBook: () => (req, res) => {
-        Book.findById(req.params.id)
+        Book.findOneAndUpdate({_id:req.params.id}, req.body)
         .exec((err, book) => {
-            if (err || book == null) {
-                requestUtil.failed(res, err || "No Item Found");
+            if (err) {
+                requestUtil.failed(res, err);
+            } else if (book == null) {
+                const { title, author, isbn, publishedOn, numberOfPages } = req.body;
+                Book.create({ _id:req.params.id, title, author, isbn, publishedOn, numberOfPages }, (err, book) => {
+                    if (err) {
+                        requestUtil.failed(res, err);
+                    } else {
+                        requestUtil.success(res, book);
+                    }
+                });
             } else {
-                for(let b in req.body){
-                    book[b] = req.body[b];
-                }
-                book.save();
-                requestUtil.success(res, book);
+                Book.findOne({_id:req.params.id})
+                .exec((err, book) => {
+                    requestUtil.success(res, book);
+                })
             }
-        });
+        }); 
     },
 };
 

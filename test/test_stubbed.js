@@ -63,6 +63,26 @@ describe('Books', function() {
                 done();
             });
         });
+
+        it('it should return No Item Found by putting the given non existant id' , (done) => {
+            this.get.yields(null, null, JSON.stringify(books.single.notfound));
+            request.get(`${base}/books/-1`, (err, res, body) => {
+                body = JSON.parse(body);
+                body.should.have.property("success").eql(false);
+				body.should.have.property("message").eql("No Item Found");
+                done();
+            });
+        });
+
+        it('it should return unsuccessful response when getting with malformed id' , (done) => {
+            this.get.yields(null, null, JSON.stringify(books.single.notfound));
+            request.get(`${base}/books/NaN-book-id`, (err, res, body) => {
+                body = JSON.parse(body);
+                body.should.have.property("success").eql(false);
+                body.message.should.have.property("name").eql("CastError");
+                done();
+            });
+        });
     });
 
     describe('[STUBBED] /POST/books', () => {
@@ -95,7 +115,7 @@ describe('Books', function() {
         });
 
         it('it should not POST a book without a title', (done) => {
-            this.post.yields(null, null, JSON.stringify(books.single.fail));
+            this.post.yields(null, null, JSON.stringify(books.single.malformed-param));
             const options = {
                 body: {
                     author: "AUTHOR1", 
@@ -123,6 +143,26 @@ describe('Books', function() {
                 body.should.have.property("success").eql(true);
                 body.data.should.have.property('ok').eql(1);
 				body.data.should.have.property('n').eql(1);	
+                done();
+            });
+        });
+
+        it('it should receive that no data deleted by deleting the given non existant id' , (done) => {
+            this.delete.yields(null, null, JSON.stringify(books.single.notfound));
+            request.delete(`${base}/books/-1`, (err, res, body) => {
+                body.should.have.property("success").eql(true);
+                body.data.should.have.property('ok').eql(1);
+				body.data.should.have.property('n').eql(0);
+                done();
+            });
+        });
+
+        it('it should return unsuccessful response when getting with malformed id' , (done) => {
+            this.delete.yields(null, null, JSON.stringify(books.single.notfound));
+            request.delete(`${base}/books/NaN-book-id`, (err, res, body) => {
+                body = JSON.parse(body);
+                body.should.have.property("success").eql(false);
+                body.message.should.have.property("name").eql("CastError");
                 done();
             });
         });
@@ -158,7 +198,7 @@ describe('Books', function() {
         });
 
         it('it should not PUT a book without a title', (done) => {
-            this.put.yields(null, null, JSON.stringify(books.single.fail));
+            this.put.yields(null, null, JSON.stringify(books.single.malformed-param));
             const options = {
                 body: {
                     author: "AUTHOR1", 
@@ -176,29 +216,13 @@ describe('Books', function() {
                 done();
             });
         });
-    });
 
-    describe('[STUBBED] /PATCH/books/:id book', () => {
-        it('it should PATCH a book given the id', (done) => {
-            this.patch.yields(null, null, JSON.stringify(books.single.update));
-            const options = {
-                body: {
-                    title: "NEW_TITLE",
-                },
-                json: true,
-                url: `${base}/books/1`
-            };
-            request.patch(options, (err, res, body) => {
+        it('it should return unsuccessful response when getting with malformed id' , (done) => {
+            this.put.yields(null, null, JSON.stringify(books.single.notfound));
+            request.put(`${base}/books/NaN-book-id`, (err, res, body) => {
                 body = JSON.parse(body);
-                body.should.have.property("success").eql(true);
-                body.data.should.have.property('title').eql("NEW_TITLE");
-                body.data.should.have.property('author').eql("AUTHOR1");
-                body.data.should.have.property('isbn').eql("1");
-                body.data.should.have.property('publishedOn').eql(2017);
-                body.data.should.have.property('numberOfPages').eql(100);
-                body.data.should.have.property('_id').eql(1);
-                body.data.should.have.property('createdAt');
-                body.data.should.have.property('updatedAt');
+                body.should.have.property("success").eql(false);
+                body.message.should.have.property("name").eql("CastError");
                 done();
             });
         });

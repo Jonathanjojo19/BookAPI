@@ -41,7 +41,11 @@
                 "__v": 0
             }
         },
-        "fail" : {
+        "notfound" : {
+            "success": false,
+            "message": "No Item Found"
+        },
+        "malformed-param" : {
             "success": false,
             "message": {
                 "errors": {
