@@ -1,0 +1,43 @@
+{
+    "all" : {
+        "success": true,
+        "data": [
+            {
+                "_id": 1,
+                "title": "TITLE1",
+                "author": "AUTHOR1",
+                "isbn": "1",
+                "publishedOn": 2017,
+                "numberOfPages": 100,
+                "createdAt": "2019-04-06T03:16:14.409Z",
+                "updatedAt": "2019-04-06T03:16:14.409Z",
+                "__v": 0
+            },
+            {
+                "_id": 2,
+                "title": "TITLE2",
+                "author": "AUTHOR2",
+                "isbn": "2",
+                "publishedOn": 2017,
+                "numberOfPages": 100,
+                "createdAt": "2019-04-06T03:16:21.906Z",
+                "updatedAt": "2019-04-06T03:16:21.906Z",
+                "__v": 0
+            }
+        ]
+    },
+    "single" : {
+        "success": true,
+        "data": {
+            "_id": 1,
+            "title": "TITLE1",
+            "author": "AUTHOR1",
+            "isbn": "1",
+            "publishedOn": 2017,
+            "numberOfPages": 100,
+            "createdAt": "2019-04-06T03:16:14.409Z",
+            "updatedAt": "2019-04-06T03:16:14.409Z",
+            "__v": 0
+        }
+    }
+}

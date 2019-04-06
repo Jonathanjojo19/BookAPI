@@ -9,6 +9,8 @@ let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
 
+let books = require("./fixtures/books.json");
+
 const base = 'http://localhost:3000';
 
 chai.use(chaiHttp);
@@ -16,22 +18,9 @@ chai.use(chaiHttp);
 describe('Books', function() {
 	this.timeout(5000);
 	beforeEach((done) => { 
-		
-		this.get = sinon.stub(request, 'get');
-		this.post = sinon.stub(request, 'post');
-		this.put = sinon.stub(request, 'put');
-		this.delete = sinon.stub(request, 'delete');
-	
 		Book.remove({}, (err) => { 
 			done();
 		});
-	});
-
-	afterEach(() => {
-		request.get.restore();
-		request.post.restore();
-		request.put.restore();
-		request.delete.restore();
 	});
 	
 	describe('/GET book', () => {
@@ -261,4 +250,3 @@ describe('Books', function() {
 		});
 	});
 });
-  
