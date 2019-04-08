@@ -2,8 +2,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     autoIncrement = require('mongoose-auto-increment');
 
+// Connect to auto-incrementing db    
 autoIncrement.initialize(mongoose.connection);
 
+// Schema for Book
 const schema = new Schema(
     {   
         _id: Number,
@@ -33,6 +35,8 @@ const schema = new Schema(
         strict: "throw"
     }
 );
+
+// Override default _id to self-incrementing numeric _id
 
 schema.plugin(autoIncrement.plugin, 'Book');
 const Book = mongoose.model("Book", schema);

@@ -2,6 +2,7 @@ const Book = require("../models/Book");
 const requestUtil = require("../util/requestUtil");
 
 const Books = {
+    // GET all books
     getAllBooks: () => (req, res) => {
         Book.find({})
         .sort({ _id: "ascending" })
@@ -10,6 +11,7 @@ const Books = {
         });
     },
 
+    // POST a book
     createBook: () => (req, res) => {
         const { title, author, isbn, publishedOn, numberOfPages } = req.body;
         Book.create({ title, author, isbn, publishedOn, numberOfPages }, (err, book) => {
@@ -21,6 +23,7 @@ const Books = {
         });
     },
 
+    // GET a book
     getBook: () => (req, res) => {
         Book.findOne({_id:req.params.id})
         .exec((err, book) => {
@@ -34,6 +37,7 @@ const Books = {
         });
     },
 
+    // DELETE a book
     deleteBook: () => (req, res) => {
         Book.findOneAndRemove({_id:req.params.id})
         .exec((err, book) => {
@@ -47,6 +51,7 @@ const Books = {
         });
     },
 
+    // PUT a book
     updateBook: () => (req, res) => {
         Book.findOneAndUpdate({_id:req.params.id}, req.body)
         .exec((err, book) => {

@@ -2,13 +2,11 @@ process.env.NODE_ENV = 'test';
 
 let Book = require('../models/Book');
 let app = require('../app');
-
 let sinon = require('sinon');
 let request = require('request');
 let chai = require('chai');
 let chaiHttp = require('chai-http');
 let should = chai.should();
-
 let books = require("./fixtures/books.json");
 
 const base = 'http://localhost:3000';

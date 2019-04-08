@@ -32,7 +32,6 @@ db.on("open", () => {
 
 // Routes
 app.use("/", routes);
-
 const server = app.listen(port, () => {
     console.log("Express running on port", port);
 });
