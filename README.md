@@ -26,7 +26,7 @@ This project consist of a Book REST-API made with:
 * Clone this repo
 
 ```bash
-git clone https://github.com/Jonathanjojo19/BookAPI.git
+$ git clone https://github.com/Jonathanjojo19/BookAPI.git
 ```
 
 * Run this commands in the command line:
