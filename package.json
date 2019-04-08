@@ -1,5 +1,5 @@
 {
-  "name": "api",
+  "name": "bookAPI",
   "version": "1.0.0",
   "description": "",
   "main": "app.js",
@@ -16,15 +16,16 @@
     "cors": "^2.8.5",
     "express": "^4.16.4",
     "istanbul": "^0.4.5",
-    "mongoose": "^5.4.20",
+    "mongoose": "^5.4.22",
     "mongoose-auto-increment": "^5.0.1",
+    "npm": "^6.7.0",
     "nyc": "^13.3.0",
     "request": "^2.88.0",
     "sinon": "^7.3.1",
     "sinon-mongoose": "^2.2.1"
   },
   "devDependencies": {
-    "mocha": "^6.0.2"
+    "mocha": "^6.1.1"
   },
   "scripts": {
     "start": "NODE_ENV=production node app.js",

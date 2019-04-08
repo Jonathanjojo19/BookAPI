@@ -14,7 +14,7 @@ const base = 'http://localhost:3000';
 chai.use(chaiHttp);
 
 describe('Books', function() {
-	this.timeout(15000);
+	this.timeout(0);
 	beforeEach((done) => { 
 		Book.remove({}, (err) => { 
 			done();

@@ -39,7 +39,7 @@ const Books = {
 
     // DELETE a book
     deleteBook: () => (req, res) => {
-        Book.findOneAndRemove({_id:req.params.id})
+        Book.findOneAndDelete({_id:req.params.id})
         .exec((err, book) => {
             if (err) {
                 requestUtil.failed(res, err);

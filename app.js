@@ -16,17 +16,16 @@ const mongoose = require("mongoose");
 
 const dbConfig = require("./config/index");
 
-mongoose.set("useCreateIndex", true);
 mongoose.connect(
     `mongodb+srv://${dbConfig.user}:${dbConfig.password}@${dbConfig.server}/${
         dbConfig.database}`,
-    {"useNewUrlParser": true}
+    {"useNewUrlParser": true, "useCreateIndex": true}
 );
 
 const db = mongoose.connection;
 
 db.on("error", console.error.bind(console, "connection error"));
-db.on("open", () => {
+db.once("open", () => {
     console.log("Connected");
 });
 
