@@ -36,7 +36,7 @@ $ npm install
 
 To run the server, cd into the cloned directory:
 ```bash
-$ node app.js
+$ npm run start
 ```
 
 To test the API and see the coverage:
